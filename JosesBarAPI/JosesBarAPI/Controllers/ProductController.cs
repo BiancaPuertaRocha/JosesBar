@@ -7,7 +7,7 @@ using JosesBarAPI.Exceptions;
 namespace JosesBarAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1")]
     public class ProductController : ControllerBase
     {
         private IProductRepository _repository;
@@ -18,7 +18,8 @@ namespace JosesBarAPI.Controllers
         }
 
 
-        [HttpGet(Name = "products")]
+        [HttpGet]
+        [Route("products")]
         public async Task<IActionResult> GetAsync()
         {
             try
@@ -58,7 +59,7 @@ namespace JosesBarAPI.Controllers
             try
             {
                 var prod = await _repository.InsertProduct(product);
-                return Created($"products/{prod.Id}", prod);
+                return Created($"v1/products/{prod.Id}", prod);
             }
             catch (InternalServerError)
             {
