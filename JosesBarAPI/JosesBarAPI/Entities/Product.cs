@@ -11,6 +11,5 @@ namespace JosesBarAPI.Entities
 
         [Required]
         public DateTimeOffset Create_at { get; set; } = DateTimeOffset.Now;
-        public int SellingCount { get; set; }
     }
 }

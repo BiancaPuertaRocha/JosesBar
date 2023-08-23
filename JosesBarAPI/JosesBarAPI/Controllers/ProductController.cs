@@ -66,5 +66,46 @@ namespace JosesBarAPI.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpPut]
+        [Route("products/{id}")]
+        public async Task<IActionResult> PutAsync([FromRoute] int id, [FromBody] UpdateProduct product)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            try
+            {
+                var prod = await _repository.UpdateProduct(product, id);
+                if (prod == null)
+                    return NotFound();
+                return Ok(prod);
+            }
+            catch (InternalServerError)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpDelete]
+        [Route("products/{id}")]
+
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            var result = false;
+            try
+            {
+                result = await _repository.DeleteProduct(id);
+            }
+            catch (InternalServerError)
+            {
+                return StatusCode(500);
+            }
+
+            if (result == true)
+                return Ok();
+            else
+                return NotFound();
+        }
     }
 }

@@ -96,7 +96,6 @@ namespace JosesBarAPI.Repository
                 prod.Description = product.Description;
                 prod.Price = product.Price;
                 prod.Quantity = product.Quantity;
-                prod.SellingCount = product.SellingCount;
 
                 _products.Update(prod);
                 await _context.SaveChangesAsync();
