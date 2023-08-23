@@ -20,5 +20,6 @@ The documentation is available at https://localhost:7014/swagger/index.html when
 
 - clone the project;
 - open it with Visual Studio;
+- if your sqlserver has a password, you will have to change the SqlConnection at the appsettings.json file with your connection string using the DB name "josesbarDB"
 - build the project;
 - now you can either test in the swagger interface or through postman/insomnia with the url https://localhost:7014/v1
