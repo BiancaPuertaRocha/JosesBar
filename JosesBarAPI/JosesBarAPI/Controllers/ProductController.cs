@@ -120,7 +120,7 @@ namespace JosesBarAPI.Controllers
             }
 
             if (result == true)
-                return Ok();
+                return Ok(true);
             else
                 return NotFound();
         }

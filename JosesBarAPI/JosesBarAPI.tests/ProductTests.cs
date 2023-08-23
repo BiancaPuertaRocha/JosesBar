@@ -1,4 +1,5 @@
 using JosesBarAPI.Controllers;
+using JosesBarAPI.Dtos;
 using JosesBarAPI.Entities;
 using JosesBarAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ namespace JosesBarAPI.tests
             _productRepositoryMock.Setup(r => r.GetProducts().Result).Returns(products);
             _productRepositoryMock.Setup(r => r.GetProductByID(2).Result).Returns(products.Find(x => x.Id == 2));
             _productRepositoryMock.Setup(r => r.GetProductByDescription("s").Result).Returns(products.FindAll(x => x.Description.Contains("s")));
+            _productRepositoryMock.Setup(r => r.DeleteProduct(2).Result).Returns(true);
+            _productRepositoryMock.Setup(r => r.InsertProduct(new CreateProduct() { Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 }).Result).Returns(new Product() { Id = 4, Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 }); ;
         }
 
 
@@ -59,6 +62,17 @@ namespace JosesBarAPI.tests
             Assert.Equal(2, actualResult.Count);
             Assert.All(actualResult, item => Assert.Contains("s", item.Description));
            
+        }
+
+        [Fact]
+        public void Delete_DeleteProductById_Deleted()
+        {
+            var result = _productController.DeleteAsync(2).Result;
+            var okResult = result as OkObjectResult;
+            var actualResult = okResult.Value as bool?;
+
+            Assert.True(actualResult);
+
         }
     }
 }
