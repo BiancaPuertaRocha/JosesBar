@@ -10,5 +10,6 @@ namespace JosesBarAPI.Repository
         Task<Product> InsertProduct(CreateProduct product);
         Task<bool> DeleteProduct(int productID);
         Task<Product?> UpdateProduct(UpdateProduct product, int id);
+        Task<List<Product>> GetProductByDescription(string descriprion);
     }
 }

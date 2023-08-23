@@ -45,6 +45,15 @@ namespace JosesBarAPI.Repository
                 throw new InternalServerError();
         }
 
+        public async Task<List<Product>> GetProductByDescription(string descriprion)
+        {
+            var _products = _context.Products;
+            if (_products != null)
+                return await _products.AsNoTracking().Where(x => x.Description.Contains(descriprion)).ToListAsync();
+            else
+                throw new InternalServerError();
+        }
+
         public async Task<IEnumerable<Product>> GetProducts()
         {
             var _products = _context.Products;

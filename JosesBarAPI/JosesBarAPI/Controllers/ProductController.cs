@@ -50,6 +50,23 @@ namespace JosesBarAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("products/filters")]
+        public async Task<IActionResult> GetAsync([FromQuery] string? description)
+        {
+            try
+            {
+                var product = await _repository.GetProductByDescription(description);
+                if (product == null)
+                    return NoContent();
+                return Ok(product);
+            }
+            catch (InternalServerError)
+            {
+                return StatusCode(500);
+            }
+        }
+
         [HttpPost("products")]
         public async Task<IActionResult> PostAsync([FromBody] CreateProduct product)
         {
