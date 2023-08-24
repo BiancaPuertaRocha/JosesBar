@@ -1,9 +1,11 @@
+using Azure;
 using JosesBarAPI.Controllers;
 using JosesBarAPI.Dtos;
 using JosesBarAPI.Entities;
 using JosesBarAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Net;
 
 namespace JosesBarAPI.tests
 {
@@ -18,6 +20,12 @@ namespace JosesBarAPI.tests
         private readonly Mock<IProductRepository> _productRepositoryMock;
         private readonly ProductController _productController;
 
+        private UpdateProduct updateProduct = new UpdateProduct() { Description = "sal" };
+        private Product updatedProduct = new Product() { Id = 3, Description = "sal", Price = 3.50m, Quantity = 15 };
+
+        private CreateProduct createProduct = new CreateProduct() { Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 };
+        private Product createdProduct = new Product() { Id = 4, Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 };
+
 
         public ProductTests()
         {
@@ -28,7 +36,10 @@ namespace JosesBarAPI.tests
             _productRepositoryMock.Setup(r => r.GetProductByID(2).Result).Returns(products.Find(x => x.Id == 2));
             _productRepositoryMock.Setup(r => r.GetProductByDescription("s").Result).Returns(products.FindAll(x => x.Description.Contains("s")));
             _productRepositoryMock.Setup(r => r.DeleteProduct(2).Result).Returns(true);
-            _productRepositoryMock.Setup(r => r.InsertProduct(new CreateProduct() { Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 }).Result).Returns(new Product() { Id = 4, Description = "salgadinho 200g", Price = 1.50m, Quantity = 15 }); ;
+            _productRepositoryMock.Setup(r => r.InsertProduct(this.createProduct).Result).Returns(this.createdProduct);
+            _productRepositoryMock.Setup(r => r.UpdateProduct(this.updateProduct, 3).Result).Returns(updatedProduct); 
+
+
         }
 
 
@@ -72,6 +83,37 @@ namespace JosesBarAPI.tests
             var actualResult = okResult.Value as bool?;
 
             Assert.True(actualResult);
+
+        }
+
+        [Fact]
+        public async void Insert_InsertProduct_ProductInserted()
+        {
+            var response = await _productController.PostAsync(this.createProduct);
+
+            CreatedResult okResult = Assert.IsType<CreatedResult>(response);
+
+            dynamic value = okResult.Value as Product;
+            Assert.NotNull(value);
+
+            Assert.Equal(this.createdProduct, value);
+
+        }
+
+        [Fact]
+        public async void Update_UpdateProduct_ProductUpdated()
+        {
+
+            var response = await _productController.PutAsync(3, this.updateProduct);
+
+            OkObjectResult okResult = Assert.IsType<OkObjectResult>(response);
+
+            dynamic value = okResult.Value;
+            Assert.NotNull(value);
+
+            string desc = (string) value.Description;
+            Assert.Equal(this.updatedProduct.Description, desc);
+
 
         }
     }
