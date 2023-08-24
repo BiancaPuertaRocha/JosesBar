@@ -8,8 +8,6 @@ namespace JosesBarAPI.Entities
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-
-        [Required]
         public DateTimeOffset Create_at { get; set; } = DateTimeOffset.Now;
     }
 }
