@@ -6,7 +6,7 @@ namespace JosesBarAPI.Dtos
     public class CreateProduct
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Description can not be empty.")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [DataType(DataType.Currency)]
         [Range(0.01, 99999999, ErrorMessage = "Price must be between 0.01 and 99999999.00")]
