@@ -1,5 +1,5 @@
 # José's Bar
-An API to a bar that manages the products replenishment and withdrawal.
+An API to a bar that manages the products replenishment and withdrawal. The project contains an API server using a SQL Server database and a test project, testing the controller only. 
 
 ## Doc
 The documentation is available at https://localhost:7014/swagger/index.html when the server is started.
