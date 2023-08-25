@@ -76,7 +76,7 @@ namespace JosesBarAPI.Repository
                 Description = product.Description,
                 Price = product.Price,
                 Quantity = product.Quantity,
-                Create_at = DateTimeOffset.Now
+                CreatedAt = DateTimeOffset.Now
             };
             try
             {

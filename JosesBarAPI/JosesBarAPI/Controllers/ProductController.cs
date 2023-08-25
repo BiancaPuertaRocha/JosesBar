@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+
 using JosesBarAPI.Dtos;
 using JosesBarAPI.Entities;
 using JosesBarAPI.Repository;
 using JosesBarAPI.Exceptions;
+using System.IO.Compression;
+using JosesBarAPI.Utils;
+using Azure;
 
 namespace JosesBarAPI.Controllers
 {
@@ -123,6 +127,27 @@ namespace JosesBarAPI.Controllers
                 return Ok(true);
             else
                 return NotFound();
+        }
+
+        [HttpGet]
+        [Route("products/download")]
+        public async Task<IActionResult> Download()
+        {
+            var products = new List<Product>();
+            try
+            {
+                var res = await _repository.GetProducts();
+                products = res.ToList();
+            }
+            catch (InternalServerError)
+            {
+                return StatusCode(500);
+            }
+
+            byte[] fileBytes = Conversions.ListToFile(products);
+
+            return File(fileBytes, "application/csv", "products.csv");
+
         }
     }
 }
